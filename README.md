@@ -8,4 +8,5 @@ Restaurant Reviews
  ## Attributions
  With help from Ryan Waite's Tutorial<br>
 https://www.youtube.com/watch?v=dMutLUzVbIA<br>
-
+and Google's Service Worker Resource<br>
+https://developers.google.com/web/fundamentals/primers/service-workers/<br>
