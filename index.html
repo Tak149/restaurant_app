@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -14,21 +14,21 @@
 <body>
   <header>
     <nav role="navigation">
-      <h1><a href="/" aria-label="Home">Restaurant Reviews</a></h1>
+      <h1><a tabindex="1" href="/" aria-label="Home">Restaurant Reviews</a></h1>
     </nav>
   </header>
 
   <main id="maincontent">
     <section id="map-container">
-      <div id="map"></div>
+      <div tabindex="0" role="application" id="map"></div>
     </section>
     <section>
       <div class="filter-options">
         <h2>Filter Results</h2>
-        <select role="tablist" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+        <select tabindex="2" aria-labelledby="Neighborhood Filter" role="tablist" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
         </select>
-        <select role="tablist" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+        <select tabindex="2" aria-labelledby="Cuisine Filter" role="tablist" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
           <option value="all">All Cuisines</option>
         </select>
       </div>
@@ -42,7 +42,7 @@
 
 
   <footer id="footer">
-    Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+    Copyright (c) 2017 <a tabindex="2" href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
 </body>
