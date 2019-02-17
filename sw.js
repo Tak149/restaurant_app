@@ -1,7 +1,7 @@
 console.log('sw.js found');
 
-var cacheName = 'cache-v1';
-var cacheList = [
+const cacheName = 'v1';
+const cacheList = [
   '/',
   '/index.html',
   '/restaurant.html',
@@ -27,22 +27,26 @@ var cacheList = [
 self.addEventListener('install', function(event) {
 	event.waitUntil(
     	caches.open(cacheName).then(function(cache) {
-        	console.log('Caching files');
+        	console.log(cache);
         	return cache.addAll(cacheList);
     	})
+      .catch(function(err) {
+        console.log('ServiceWorker install failed', err);
+      })
 	);
 });
 
 //activates the service worker
 self.addEventListener('activate', function(event) {
   event.waitUntil(
-    caches.keys().then(function(keys) {
-      return Promise.all(keys.map(function(key, i) {
-          if (key !== cacheName) {
-            return caches.delete(keys[i]);
-          }
-        })
-      );
+    caches.keys().then(function(nameChecking) {
+      return Promise.all(nameChecking.map(function(name){
+        console.log('activating');
+        if (cacheName !== name) return caches.delete(name);
+      }));
+    })
+    .catch(function(err) {
+      console.log('ServiceWorker activation failed', err);
     })
   );
 });
@@ -50,26 +54,14 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request).then(function(response) {
-        if (response) {
-          return response;
-        }
-        requestClone(event);
+      if(response){
+        console.log('fetching from cache', response);
+        return response;
+      }
+      return fetch(event.request).then(function(response){
+        console.log('fetching from network', response);
+        return response;
       })
-    );
+    })
+  );
 });
-
-function requestClone(event) {
-	var url = event.request.clone();
-	return fetch(url).then(function(response){
-		if(!response || response.status !== 200 || response.type !== 'basic'){
-			return response;
-		}
-
-		var clonedRes = response.clone();
-
-		caches.open(cacheName).then(function(cache){
-			cache.put(event.request, clonedRes);
-		});
-		return response;
-	})
-}
